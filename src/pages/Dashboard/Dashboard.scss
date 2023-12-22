@@ -1,3 +1,105 @@
-h1 {
-  color: red;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(to top right, #7c89d5, #f599a5);
+  font-size: 12px;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 88vh;
+  max-width: 1400px;
+  display: flex;
+}
+
+.inspiration {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Gill Sans", sans-serif;
+  color: white;
+}
+
+.left {
+  flex: 0 0 150px;
+  width: 150px;
+  height: 100%;
+  background-color: white;
+  color: #848697;
+  border-radius: 3px 0 0 3px;
+}
+
+.logo {
+  position: relative;
+  top: 20px;
+  cursor: pointer;
+  img {
+    width: 150px;
+    height: auto;
+  }
+  p {
+    color: rgb(48, 48, 48);
+    text-align: center;
+    font-size: 16px;
+  }
+}
+
+.company {
+  text-align: center;
+
+  .company-name {
+    font-weight: bold;
+    color: #333;
+  }
+  .company-description {
+    position: relative;
+    margin: 10px auto;
+    width: 100px;
+    font-size: 10px;
+  }
+}
+
+.navigation {
+  position: relative;
+  display: block;
+  margin-top: 50px;
+  ul {
+    padding-inline-start: 0 !important;
+  }
+
+  li {
+    padding: 0px 25px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    i {
+      font-size: 20px;
+    }
+    span {
+      padding-left: 15px;
+      vertical-align: super;
+    }
+  }
+}
+
+.right {
+  flex: 1 1 auto;
+  background-color: #f6f6fc;
+  padding: 30px;
+  border-radius: 0 3px 3px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
