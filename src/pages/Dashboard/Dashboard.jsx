@@ -10,6 +10,7 @@ import {
   faCircleQuestion,
   faMessage,
   faCircleExclamation,
+  faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 
 import MainPage from "../../component/MainPage/MainPage";
@@ -20,7 +21,7 @@ import TagManagement from "../../component/TagManagement/TagManagement";
 import UserManagement from "../../component/UserManagement/UserManagement";
 import QuestionManagement from "../../component/QuestionManagement/QuestionManagement";
 import WarningManagement from "../../component/WarningManagement/WarningManagement";
-
+import RoadmapManagement from "../../component/RoadmapManagement/RoadmapManagement";
 import logo from "../../assets/images/logo.png";
 
 import { checkAuthenticationInApp } from "../../services/common";
@@ -85,6 +86,12 @@ export default function Dashboard() {
                 </i>
                 <span>Warning</span>
               </li>
+              <li onClick={() => setPage(8)}>
+                <i>
+                  <FontAwesomeIcon icon={faLayerGroup} />
+                </i>
+                <span>Roadmap</span>
+              </li>
             </ul>
           </div>
         </div>
@@ -112,6 +119,8 @@ function renderPage(page) {
       return <QuestionManagement />;
     case 7:
       return <WarningManagement />;
+    case 8:
+      return <RoadmapManagement />;
 
     default:
       return <MainPage />;

@@ -2,7 +2,7 @@ import { checkAdmin } from "../api/auth";
 import moment from "moment/moment";
 
 function checkAuthenticationInApp() {
-  if (localStorage.getItem("HOCVOIAI_TOKEN"))
+  if (localStorage.getItem("HOCVOIAI_ADMIN_TOKEN"))
     checkAdmin()
       .then((res) => {
         if (res.code !== 200 || !res.data) {
@@ -20,4 +20,8 @@ function renderFormatedDateTime(time) {
   return moment(time).format("YYYY-MM-DD HH:mm:ss");
 }
 
-export { checkAuthenticationInApp, renderFormatedDateTime };
+function renderFormatedDate(time) {
+  return moment(time).format("YYYY-MM-DD");
+}
+
+export { checkAuthenticationInApp, renderFormatedDateTime, renderFormatedDate };

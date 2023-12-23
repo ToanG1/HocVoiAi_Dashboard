@@ -40,7 +40,7 @@ export default function Pagination({ pages, onPageChange }) {
       <button onClick={handleBackWardPage}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
-      {startPage > 0 ? <p>...</p> : null}
+      {startPage > 0 ? <span>...</span> : null}
       {Array(endPage - startPage + 1)
         .fill()
         .map((_, index) => {
@@ -57,7 +57,7 @@ export default function Pagination({ pages, onPageChange }) {
             </button>
           );
         })}
-      {startPage < pages - pageToShow ? <p>...</p> : null}
+      {startPage < pages - pageToShow ? <span>...</span> : null}
 
       <button onClick={handleForWardPage}>
         <FontAwesomeIcon icon={faChevronRight} />
