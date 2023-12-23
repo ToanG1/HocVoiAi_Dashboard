@@ -3,13 +3,19 @@ import { authedAxiosInstance, axiosInstance } from ".";
 async function handleLocalStorage(res) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      localStorage.removeItem("HOCVOIAI_TOKEN");
-      localStorage.removeItem("HOCVOIAI_REFRESHTOKEN");
-      localStorage.removeItem("USER_INFO");
+      localStorage.removeItem("HOCVOIAI_ADMIN_TOKEN");
+      localStorage.removeItem("HOCVOIAI_ADMIN_REFRESHTOKEN");
+      localStorage.removeItem("USER_ADMIN_INFO");
 
-      localStorage.setItem("HOCVOIAI_TOKEN", res.data.access_token);
-      localStorage.setItem("HOCVOIAI_REFRESHTOKEN", res.data.refersh_token);
-      localStorage.setItem("USER_INFO", JSON.stringify(res.data.user_info));
+      localStorage.setItem("HOCVOIAI_ADMIN_TOKEN", res.data.access_token);
+      localStorage.setItem(
+        "HOCVOIAI_ADMIN_REFRESHTOKEN",
+        res.data.refersh_token
+      );
+      localStorage.setItem(
+        "USER_ADMIN_INFO",
+        JSON.stringify(res.data.USER_ADMIN_INFO)
+      );
       resolve();
     }, 500);
   });
@@ -18,9 +24,9 @@ async function handleLocalStorage(res) {
 async function handleRemoveLocalStorage(res) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      localStorage.removeItem("HOCVOIAI_TOKEN");
-      localStorage.removeItem("HOCVOIAI_REFRESHTOKEN");
-      localStorage.removeItem("USER_INFO");
+      localStorage.removeItem("HOCVOIAI_ADMIN_TOKEN");
+      localStorage.removeItem("HOCVOIAI_ADMIN_REFRESHTOKEN");
+      localStorage.removeItem("USER_ADMIN_INFO");
       resolve();
     }, 500);
   });

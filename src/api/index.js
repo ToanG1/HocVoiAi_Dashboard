@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 function getToken() {
-  const token = localStorage.getItem("HOCVOIAI_TOKEN");
+  const token = localStorage.getItem("HOCVOIAI_ADMIN_TOKEN");
   if (token === null) {
     setInterval(() => {
       getToken();
@@ -48,8 +48,8 @@ authedAxiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       const { data } = await refreshToken();
-      localStorage.removeItem("HOCVOIAI_TOKEN");
-      localStorage.setItem("HOCVOIAI_TOKEN", data.access_token);
+      localStorage.removeItem("HOCVOIAI_ADMIN_TOKEN");
+      localStorage.setItem("HOCVOIAI_ADMIN_TOKEN", data.access_token);
 
       // Update the Authorization header with the new token
       authedAxiosInstance.defaults.headers.common[
@@ -64,9 +64,10 @@ authedAxiosInstance.interceptors.response.use(
 
 // Function to refresh the token (replace this with your actual token refresh logic)
 const refreshToken = async () => {
-  return axiosInstance.post(`/auth/refresh`, {
-    refreshToken: localStorage.getItem("HOCVOIAI_REFRESHTOKEN"),
-  });
+  const data = {
+    refreshToken: localStorage.getItem("HOCVOIAI_ADMIN_REFRESHTOKEN"),
+  };
+  return axiosInstance.post(`/auth/refresh`, data);
 };
 
 export { BASE_URL, IMG_URL, WS_SERVER, axiosInstance, authedAxiosInstance };
