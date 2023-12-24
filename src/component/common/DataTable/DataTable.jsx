@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./DataTable.scss";
 
 import Pagination from "../Pagination/Pagination";
@@ -23,7 +23,7 @@ function getAllFieldNames(obj, prefix = "") {
   return fieldNames;
 }
 
-export default function DataTable({ data, pages }) {
+export default function DataTable({ data, pages, updateData, deleteData }) {
   const [selectedRow, setSelectedRow] = useState({});
 
   function handleSelectRow(row) {
@@ -120,6 +120,19 @@ export default function DataTable({ data, pages }) {
     console.log(page);
   }
 
+  function handleDeselectRow() {
+    setSelectedRow({});
+  }
+
+  function handleUpdateRow() {
+    updateData(selectedRow);
+  }
+
+  function handleDeleteRow() {
+    deleteData(selectedRow);
+    handleDeselectRow();
+  }
+
   if (data[0]) {
     const properties = getAllFieldNames(data[0]);
 
@@ -152,9 +165,13 @@ export default function DataTable({ data, pages }) {
             <h2>Data</h2>
             <div className="list-data-field">{renderDataBox()}</div>
             <div className="data-box-btn">
-              <button>Cancel</button>
-              <button id="update">Update</button>
-              <button id="delete">Delete</button>
+              <button onClick={handleDeselectRow}>Cancel</button>
+              <button onClick={handleUpdateRow} id="update">
+                Update
+              </button>
+              <button onClick={handleDeleteRow} id="delete">
+                Delete
+              </button>
             </div>
           </div>
         </div>
