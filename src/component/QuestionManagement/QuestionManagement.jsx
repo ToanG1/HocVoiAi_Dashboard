@@ -64,7 +64,7 @@ export default function QuestionManagement() {
   }, [chartData]);
   return (
     <>
-      <div className="title">Page QuestionManagement</div>
+      <div className="title">Page Question Management</div>
       <LineChart data={chartData.dataByMonth} />
       <PolarAreaChart data={chartData.dataByQuestion} />
       <RadarChart />

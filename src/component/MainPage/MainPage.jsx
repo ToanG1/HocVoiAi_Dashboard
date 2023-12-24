@@ -4,8 +4,8 @@ import styles from "./MainPage.scss";
 export default function MainPage() {
   return (
     <>
-      <div className="title">Market</div>
-      <div className="description">Browse stocks that are always available</div>
+      <div className="title">Home</div>
+      <div className="description">Lộ trình học AI journey cung cấp một hành trình các bước  toàn diện thực hiện 1 để tài bất kỳ có sử dụng trí tuệ nhân tạo, từ cơ bản đến nâng cao. Với sự đa dạng và phương pháp độc đáo, AI journey là nguồn tài liệu tham khảo chất lượng để học và phát triển kỹ năng.</div>
       <div className="row">
         <div className="graph">
           <svg viewBox="0 0 250 60" width="250" height="90">
