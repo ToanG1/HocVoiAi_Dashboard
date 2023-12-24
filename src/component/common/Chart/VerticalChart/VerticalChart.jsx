@@ -20,38 +20,57 @@ ChartJS.register(
 );
 
 export const options = {
-  responsive: true,
+  responsive: false,
   plugins: {
     legend: {
-      position: "top",
+      display: false,
+      position: "left",
     },
     title: {
       display: true,
-      text: "Chart.js Bar Chart",
+      text: "Vertical Chart",
     },
   },
+  layout: {
+    padding: {
+      left: 20,
+      right: 20,
+      bottom: 10,
+      top: 10,
+    },
+  },
+  maintainAspectRatio: false,
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+// const data = {
+//   labels,
+//   datasets: [
+//     {
+//       label: "Dataset 1",
+//       data: fakeData,
+//       backgroundColor: "rgba(255, 99, 132, 0.5)",
+//     },
+//     {
+//       label: "Dataset 2",
+//       data: fakeData,
+//       backgroundColor: "rgba(53, 162, 235, 0.5)",
+//     },
+//   ],
+// };
 
-const fakeData = [1000, 1200, 1300, 1400, 1500, 1600, 1700];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: fakeData,
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Dataset 2",
-      data: fakeData,
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
-
-export function VerticalChart() {
-  return <Bar options={options} data={data} />;
+export function VerticalChart({ data }) {
+  if (data) {
+    const chartData = {
+      labels: data.labels,
+      datasets: data.datasets,
+    };
+    return (
+      <Bar
+        options={options}
+        data={chartData}
+        width={"300px"}
+        height={"200px"}
+      />
+    );
+  }
 }
