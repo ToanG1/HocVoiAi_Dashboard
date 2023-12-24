@@ -8,6 +8,7 @@ function App() {
         <Route path="admin" element={<Dashboard />} />
         <Route path="login" element={<Login />} />
         <Route path="*" element={<Navigate to="admin" />} />
+        <Route path="login" element={<Login/>} />
       </Routes>
     </BrowserRouter>
   );
