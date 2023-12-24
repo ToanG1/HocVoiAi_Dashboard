@@ -7,7 +7,7 @@ import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
 import { LineChart } from "../common/Chart/LineChart/LineChart";
 import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
 import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
-import { getUsers } from "../../api/user";
+
 import { toast } from "react-toastify";
 
 import { getUsers,getChartData,updateUsers,deleteUsers } from "../../api/user";

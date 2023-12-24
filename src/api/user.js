@@ -5,5 +5,13 @@ function getUsers() {
 }
 function getChartData(type) {
   return authedAxiosInstance.get(`/user/chart?type=${type}`);
+
 }
-export { getUsers, getChartData };
+function updateUsers(data) {
+  return authedAxiosInstance.patch(`/user/${data.id}`, data);
+}
+
+function deleteUsers(id) {
+  return authedAxiosInstance.delete(`/user/${id}`);
+}
+export { getUsers, getChartData,updateUsers,deleteUsers };
