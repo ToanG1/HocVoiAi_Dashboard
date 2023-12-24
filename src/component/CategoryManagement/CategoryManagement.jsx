@@ -6,7 +6,8 @@ import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
 import { LineChart } from "../common/Chart/LineChart/LineChart";
 import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
 import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
-import { getCategories , getChartData} from "../../api/category";
+import { getCategories , getChartData,updateCategory,deleteCategory} from "../../api/category";
+import { toast } from "react-toastify";
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
   if (res.code === 200) {
@@ -57,9 +58,66 @@ export default function CategoryManagement() {
 
 
   }, []);
-  useEffect(() => {
-    console.log(chartData);
-  }, [chartData]);
+  function handleUpdateRow(data) {
+    console.log("update", data);
+    updateCategory(data)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Update Category  successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
+  function handleDeleteRow(data) {
+    console.log("delete", data);
+    deleteCategory(data.id)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Delete Category  successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
   return (
     <>
       <div className="title">Page Category Management</div>
@@ -68,7 +126,7 @@ export default function CategoryManagement() {
       <RadarChart />
       <DoughnutChart />
       <VerticalChart />
-      <DataTable data={category} pages={pages} />
+      <DataTable data={category} pages={pages} updateData={handleUpdateRow}deleteData={handleDeleteRow}/>
      
     </>
   );
