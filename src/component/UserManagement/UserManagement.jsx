@@ -7,10 +7,10 @@ import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
 import { LineChart } from "../common/Chart/LineChart/LineChart";
 import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
 import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
-import { getUsers } from "../../api/user";
 
+import { toast } from "react-toastify";
 
-import { getQuestions,getChartData } from "../../api/question";
+import { getUsers,getChartData,updateUsers,deleteUsers } from "../../api/user";
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
   if (res.code === 200) {
@@ -62,7 +62,66 @@ export default function UserManagement() {
 
 
   }, []);
-
+  function handleUpdateRow(data) {
+    console.log("update", data);
+    updateUsers(data)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Update Users successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
+  function handleDeleteRow(data) {
+    console.log("delete", data);
+    deleteUsers(data.id)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Delete Users successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
   return (
     <>
       <div className="title">Page User Management</div>
@@ -71,8 +130,8 @@ export default function UserManagement() {
       <RadarChart />
       <DoughnutChart />
       <VerticalChart />
-      
-      <DataTable data={data} pages={pages} />
+
+      <DataTable data={data} pages={pages} updateData={handleUpdateRow} deleteData={handleDeleteRow}/>
     </>
   );
 }
