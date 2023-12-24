@@ -8,6 +8,7 @@ import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
 import { LineChart } from "../common/Chart/LineChart/LineChart";
 import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
 import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
+
 import { getRoadmaps, getChartData } from "../../api/roadmap";
 
 const handleGetChartData = async (type) => {
@@ -25,6 +26,9 @@ export default function RoadmapManagement() {
   const [chartData, setChartData] = useState({
     dataByMonth: null,
     dataByCategory: null,
+    dataByLevel: null,
+    dataByLanguage: null,
+    dataByType: null,
   });
   useEffect(() => {
     // get all Roadmaps to show in table
@@ -53,26 +57,47 @@ export default function RoadmapManagement() {
           console.log(err);
           return null;
         });
-
+      const chartByRoadmapLevel = await handleGetChartData("roadmap-level")
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      const chartByRoadmapLanguage = await handleGetChartData(
+        "roadmap-language"
+      )
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      const chartByRoadmapType = await handleGetChartData("roadmap-type")
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
       setChartData({
         dataByMonth: chartByMonthData,
         dataByCategory: chartByCategoryData,
+        dataByLevel: chartByRoadmapLevel,
+        dataByLanguage: chartByRoadmapLanguage,
+        dataByType: chartByRoadmapType,
       });
     };
     getData();
   }, []);
 
-  useEffect(() => {
-    console.log(chartData);
-  }, [chartData]);
   return (
     <>
-      <div className="title">Page RoadmapManagement</div>
-      <LineChart data={chartData.dataByMonth} />
-      <PolarAreaChart data={chartData.dataByCategory} />
-      <RadarChart />
-      <DoughnutChart />
-      <VerticalChart />
+      <div className="title">Roadmap Management</div>
+      <div className="chart-container">
+        <LineChart data={chartData.dataByMonth} />
+        <PolarAreaChart data={chartData.dataByCategory} />
+        <RadarChart data={chartData.dataByLanguage} />
+        <DoughnutChart data={chartData.dataByLevel} />
+        <VerticalChart data={chartData.dataByType} />
+      </div>
 
       <DataTable data={data} pages={pages} />
     </>

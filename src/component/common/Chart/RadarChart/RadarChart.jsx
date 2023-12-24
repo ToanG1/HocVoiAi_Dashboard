@@ -19,19 +19,53 @@ ChartJS.register(
   Legend
 );
 
-export const data = {
-  labels: ["Thing 1", "Thing 2", "Thing 3", "Thing 4", "Thing 5", "Thing 6"],
-  datasets: [
-    {
-      label: "# of Votes",
-      data: [2, 9, 3, 5, 2, 3],
-      backgroundColor: "rgba(255, 99, 132, 0.2)",
-      borderColor: "rgba(255, 99, 132, 1)",
-      borderWidth: 1,
+// const data = {
+//   labels: ["Thing 1", "Thing 2", "Thing 3", "Thing 4", "Thing 5", "Thing 6"],
+//   datasets: [
+//     {
+//       label: "# of Votes",
+//       data: [2, 9, 3, 5, 2, 3],
+//       backgroundColor: "rgba(255, 99, 132, 0.2)",
+//       borderColor: "rgba(255, 99, 132, 1)",
+//       borderWidth: 1,
+//     },
+//   ],
+// };
+export const options = {
+  responsive: false,
+  plugins: {
+    legend: {
+      display: false,
+      position: "top",
     },
-  ],
+    title: {
+      display: true,
+      text: "Radar Chart",
+    },
+  },
+  layout: {
+    padding: {
+      left: 20,
+      right: 20,
+      bottom: 10,
+      top: 10,
+    },
+  },
+  maintainAspectRatio: false,
 };
-
-export function RadarChart() {
-  return <Radar data={data} />;
+export function RadarChart({ data }) {
+  if (data) {
+    const chartData = {
+      labels: data.labels,
+      datasets: data.datasets,
+    };
+    return (
+      <Radar
+        data={chartData}
+        options={options}
+        width={"250px"}
+        height={"200px"}
+      />
+    );
+  }
 }

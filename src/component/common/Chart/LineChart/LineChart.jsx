@@ -24,16 +24,25 @@ ChartJS.register(
 );
 
 export const options = {
-  responsive: true,
+  responsive: false,
   plugins: {
     legend: {
       position: "top",
     },
     title: {
       display: true,
-      text: "Chart.js Line Chart",
+      text: "Line Chart",
     },
   },
+  layout: {
+    padding: {
+      left: 20,
+      right: 20,
+      bottom: 10,
+      top: 10,
+    },
+  },
+  maintainAspectRatio: false,
 };
 
 export function LineChart({ data }) {
@@ -42,6 +51,13 @@ export function LineChart({ data }) {
       labels: data.labels,
       datasets: data.datasets,
     };
-    return <Line options={options} data={chartData} />;
+    return (
+      <Line
+        options={options}
+        data={chartData}
+        width={"250px"}
+        height={"200px"}
+      />
+    );
   }
 }
