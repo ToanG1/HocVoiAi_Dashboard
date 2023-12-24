@@ -9,7 +9,14 @@ import { LineChart } from "../common/Chart/LineChart/LineChart";
 import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
 import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
 
-import { getRoadmaps, getChartData } from "../../api/roadmap";
+import {
+  getRoadmaps,
+  getChartData,
+  updateRoadmap,
+  deleteRoadmap,
+} from "../../api/roadmap";
+
+import { toast } from "react-toastify";
 
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
@@ -88,6 +95,67 @@ export default function RoadmapManagement() {
     getData();
   }, []);
 
+  function handleUpdateRow(data) {
+    console.log("update", data);
+    updateRoadmap(data)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Update roadmap successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
+  function handleDeleteRow(data) {
+    console.log("delete", data);
+    deleteRoadmap(data.id)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Delete roadmap successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
+
   return (
     <>
       <div className="title">Roadmap Management</div>
@@ -99,7 +167,12 @@ export default function RoadmapManagement() {
         <VerticalChart data={chartData.dataByType} />
       </div>
 
-      <DataTable data={data} pages={pages} />
+      <DataTable
+        data={data}
+        pages={pages}
+        updateData={handleUpdateRow}
+        deleteData={handleDeleteRow}
+      />
     </>
   );
 }

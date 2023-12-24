@@ -25,6 +25,7 @@ import RoadmapManagement from "../../component/RoadmapManagement/RoadmapManageme
 import logo from "../../assets/images/logo.png";
 
 import { checkAuthenticationInApp } from "../../services/common";
+import { ToastContainer } from "react-toastify";
 
 export default function Dashboard() {
   const [page, setPage] = useState(0);
@@ -36,6 +37,7 @@ export default function Dashboard() {
   return (
     <>
       <div className="center">
+        <ToastContainer />
         <div className="left">
           <div className="logo" onClick={() => setPage(0)}>
             <img src={logo} alt="Hoc Voi Ai ADMIN" />
