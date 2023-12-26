@@ -25,41 +25,58 @@ export default function QuestionManagement() {
   const [chartData, setChartData] = useState({
     dataByMonth: null,
     dataByCategory: null,
-    dataByUser: null,
-    
+    dataByActivation: null,
+    dataByInteraction: null,
   });
   useEffect(() => {
     getQuestions()
       .then((res) => {
         if (res.code === 200) {
-          console.log(res.data.data);
-          setData(res.data.data);
+          const result = res.data.data.map((item) => {
+            const { replies, comments, content, ...rest } = item;
+            return rest;
+          });
+
+          setData(result);
           setPages(Math.ceil(res.data.totalItems / res.data.limit));
         }
       })
       .catch((err) => {
         console.log(err);
       });
-      
-      const getData = async () => {
-        const chartByMonthData = await handleGetChartData("month")
-          .then((res) => res)
-          .catch((err) => {
-            console.log(err);
-            return null;
-          });
-        const chartByCategoryData = await handleGetChartData("question")
-          .then((res) => res)
-          .catch((err) => {
-            console.log(err);
-            return null;
-          });
-  
-        setChartData({
-          dataByMonth: chartByMonthData,
-          dataByCategory: chartByCategoryData,
+
+    const getData = async () => {
+      const chartByMonthData = await handleGetChartData("month")
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
         });
-      };
+      const chartByCategoryData = await handleGetChartData("category")
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      const chartByActivationData = await handleGetChartData("activated")
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      const chartByInteraction = await handleGetChartData("interaction")
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      setChartData({
+        dataByMonth: chartByMonthData,
+        dataByCategory: chartByCategoryData,
+        dataByActivation: chartByActivationData,
+        dataByInteraction: chartByInteraction,
+      });
+    };
     getData();
   }, []);
   function handleUpdateRow(data) {
@@ -125,14 +142,16 @@ export default function QuestionManagement() {
 
   return (
     <>
-      <div className="title">Page Question Management</div>
-      <LineChart data={chartData.dataByMonth} />
-      <PolarAreaChart data={chartData.dataByQuestion} />
-      <RadarChart data={chartData.dataByUser}/>
-      <DoughnutChart />
-      <VerticalChart />
-      
-      <DataTable data={data} pages={pages} updateData={handleUpdateRow} deleteData={handleDeleteRow}/>
+      <div className="title">Page QuestionManagement</div>
+      <div className="chart-container">
+        <LineChart data={chartData.dataByMonth} />
+        <PolarAreaChart data={chartData.dataByCategory} />
+        <RadarChart data={chartData.dataByInteraction} />
+        <DoughnutChart data={chartData.dataByActivation} />
+        <VerticalChart />
+      </div>
+
+      <DataTable data={data} pages={pages} />
     </>
   );
 }

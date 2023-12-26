@@ -28,6 +28,7 @@ export const options = {
       top: 10,
     },
   },
+
   maintainAspectRatio: false,
 };
 export function PolarAreaChart({ data }) {
@@ -40,7 +41,7 @@ export function PolarAreaChart({ data }) {
       <PolarArea
         data={chartData}
         options={options}
-        width={"280px"}
+        width={"350px"}
         height={"200px"}
       />
     );

@@ -23,7 +23,13 @@ function getAllFieldNames(obj, prefix = "") {
   return fieldNames;
 }
 
-export default function DataTable({ data, pages, updateData, deleteData }) {
+export default function DataTable({
+  data,
+  pages,
+  onPageChange,
+  updateData,
+  deleteData,
+}) {
   const [selectedRow, setSelectedRow] = useState({});
 
   function handleSelectRow(row) {
@@ -32,7 +38,7 @@ export default function DataTable({ data, pages, updateData, deleteData }) {
   //Render for DataTable
   function renderDataRow(item) {
     return Object.entries(item).map(([key, value]) => {
-      return renderCellData(value, typeof value);
+      if (key !== "content") return renderCellData(value, typeof value);
     });
   }
 
@@ -56,17 +62,31 @@ export default function DataTable({ data, pages, updateData, deleteData }) {
   //Render for DataBox
   function renderDataBox() {
     return Object.entries(selectedRow).map(([key, value]) => {
-      if (typeof value !== "object")
-        return (
-          <div>
-            <p>{key}:</p> {renderDataField(value, typeof value, key)}
-          </div>
-        );
+      if (typeof value !== "object") {
+        if (key === "content")
+          return (
+            <div>
+              <p>{key}:</p>
+              <textarea
+                value={value}
+                onChange={(e) => {
+                  setSelectedRow({ ...selectedRow, [key]: e.target.value });
+                }}
+              />
+            </div>
+          );
+        else
+          return (
+            <div>
+              <p>{key}:</p> {renderDataField(value, typeof value, key)}
+            </div>
+          );
+      }
     });
   }
 
   function renderDataField(data, type, key) {
-    if (!isNaN(new Date(data)) && type === "string")
+    if (!isNaN(new Date(data)) && type === "string" && isNaN(Number(data))) {
       return (
         <input
           type="date"
@@ -77,6 +97,8 @@ export default function DataTable({ data, pages, updateData, deleteData }) {
           format="YYYY-MM-DD"
         />
       );
+    }
+
     switch (type) {
       case "boolean":
         return (
@@ -117,7 +139,7 @@ export default function DataTable({ data, pages, updateData, deleteData }) {
   }
 
   function handlePageChange(page) {
-    console.log(page);
+    onPageChange(page + 1);
   }
 
   function handleDeselectRow() {
@@ -143,9 +165,9 @@ export default function DataTable({ data, pages, updateData, deleteData }) {
             <table className="fl-table">
               <thead>
                 <tr>
-                  {properties.map((header) => (
-                    <th>{header}</th>
-                  ))}
+                  {properties.map((header) =>
+                    header !== "content" ? <th>{header}</th> : null
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -170,7 +192,7 @@ export default function DataTable({ data, pages, updateData, deleteData }) {
                 Update
               </button>
               <button onClick={handleDeleteRow} id="delete">
-                Delete
+                Ban
               </button>
             </div>
           </div>

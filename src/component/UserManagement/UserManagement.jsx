@@ -25,7 +25,7 @@ export default function UserManagement() {
   const [pages, setPages] = useState(0);
   const [chartData, setChartData] = useState({
     dataByMonth: null,
-    dataByCategory: null,
+    dataByActivation: null,
   });
   useEffect(() => {
     getUsers()
@@ -38,29 +38,25 @@ export default function UserManagement() {
       .catch((err) => {
         console.log(err);
       });
-      const getData = async () => {
-        const chartByMonthData = await handleGetChartData("month")
-          .then((res) => res)
-          .catch((err) => {
-            console.log(err);
-            return null;
-          });
-        const chartByCategoryData = await handleGetChartData("user")
-          .then((res) => res)
-          .catch((err) => {
-            console.log(err);
-            return null;
-          });
-  
-        setChartData({
-          dataByMonth: chartByMonthData,
-          dataByCategory: chartByCategoryData,
+    const getData = async () => {
+      const chartByMonthData = await handleGetChartData("month")
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
         });
-      };
+      const chartByActivationData = await handleGetChartData("activated")
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      setChartData({
+        dataByMonth: chartByMonthData,
+        dataByActivation: chartByActivationData,
+      });
+    };
     getData();
-
-
-
   }, []);
   function handleUpdateRow(data) {
     console.log("update", data);
@@ -125,13 +121,15 @@ export default function UserManagement() {
   return (
     <>
       <div className="title">Page User Management</div>
-      <LineChart data={chartData.dataByMonth} />
-      <PolarAreaChart data={chartData.dataByQuestion} />
-      <RadarChart />
-      <DoughnutChart />
-      <VerticalChart />
+      <div className="chart-container">
+        <LineChart data={chartData.dataByMonth} />
+        {/* <PolarAreaChart />
+      <RadarChart /> */}
+        <DoughnutChart data={chartData.dataByActivation} />
+        {/* <VerticalChart /> */}
+      </div>
 
-      <DataTable data={data} pages={pages} updateData={handleUpdateRow} deleteData={handleDeleteRow}/>
+      <DataTable data={data} pages={pages} />
     </>
   );
 }

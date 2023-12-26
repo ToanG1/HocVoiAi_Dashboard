@@ -30,6 +30,7 @@ const handleGetChartData = async (type) => {
 export default function RoadmapManagement() {
   const [data, setData] = useState([]);
   const [pages, setPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [chartData, setChartData] = useState({
     dataByMonth: null,
     dataByCategory: null,
@@ -38,18 +39,6 @@ export default function RoadmapManagement() {
     dataByType: null,
   });
   useEffect(() => {
-    // get all Roadmaps to show in table
-    getRoadmaps()
-      .then((res) => {
-        if (res.code === 200) {
-          setData(res.data.data);
-          setPages(Math.ceil(res.data.totalItems / res.data.limit));
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     // get chart data
     const getData = async () => {
       const chartByMonthData = await handleGetChartData("month")
@@ -95,6 +84,20 @@ export default function RoadmapManagement() {
     getData();
   }, []);
 
+  useEffect(() => {
+    // get all Roadmaps to show in table
+    getRoadmaps(currentPage, 10)
+      .then((res) => {
+        if (res.code === 200) {
+          setData(res.data.data);
+          setPages(Math.ceil(res.data.totalItems / res.data.limit));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [currentPage]);
+
   function handleUpdateRow(data) {
     console.log("update", data);
     updateRoadmap(data)
@@ -130,7 +133,7 @@ export default function RoadmapManagement() {
     deleteRoadmap(data.id)
       .then((res) => {
         if (res.code === 200) {
-          toast.success("Delete roadmap successfully", {
+          toast.success("Ban roadmap successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -170,6 +173,7 @@ export default function RoadmapManagement() {
       <DataTable
         data={data}
         pages={pages}
+        onPageChange={setCurrentPage}
         updateData={handleUpdateRow}
         deleteData={handleDeleteRow}
       />

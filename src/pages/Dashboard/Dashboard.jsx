@@ -9,7 +9,7 @@ import {
   faUser,
   faCircleQuestion,
   faMessage,
-  faCircleExclamation,
+  faFlag,
   faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -20,12 +20,20 @@ import Message from "../../component/Message/Message";
 import TagManagement from "../../component/TagManagement/TagManagement";
 import UserManagement from "../../component/UserManagement/UserManagement";
 import QuestionManagement from "../../component/QuestionManagement/QuestionManagement";
-import WarningManagement from "../../component/WarningManagement/WarningManagement";
+import WarningManagement from "../../component/ReportManagement/ReportManagement";
 import RoadmapManagement from "../../component/RoadmapManagement/RoadmapManagement";
 import logo from "../../assets/images/logo.png";
 
 import { checkAuthenticationInApp } from "../../services/common";
 import { ToastContainer } from "react-toastify";
+
+function handleRemoveActivate() {
+  const items = document.getElementsByClassName("nav-item");
+  console.log(items);
+  for (let i = 0; i < items.length; i++) {
+    items[i].classList.remove("active");
+  }
+}
 
 export default function Dashboard() {
   const [page, setPage] = useState(0);
@@ -36,59 +44,122 @@ export default function Dashboard() {
 
   return (
     <>
+      <ToastContainer />
       <div className="center">
-        <ToastContainer />
         <div className="left">
-          <div className="logo" onClick={() => setPage(0)}>
+          <div
+            className="logo"
+            onClick={(e) => {
+              setPage(0);
+              handleRemoveActivate();
+              e.currentTarget.classList.add("active");
+            }}
+          >
             <img src={logo} alt="Hoc Voi Ai ADMIN" />
             <p>Dashboard</p>
           </div>
 
           <div className="navigation">
             <ul>
-              <li onClick={() => setPage(1)}>
+              {/* <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(1);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
                 <i>
                   <FontAwesomeIcon icon={faCompass} />
                 </i>
                 <span>Page</span>
-              </li>
-              <li onClick={() => setPage(2)}>
+              </li> */}
+              <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(2);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
                 <i>
                   <FontAwesomeIcon icon={faList} />
                 </i>
                 <span>Category</span>
               </li>
-              <li onClick={() => setPage(3)}>
+              {/* <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(3);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
                 <i>
                   <FontAwesomeIcon icon={faTag} />
                 </i>
                 <span>Tag</span>
-              </li>
-              <li onClick={() => setPage(4)}>
+              </li> */}
+              <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(4);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
                 <i>
                   <FontAwesomeIcon icon={faUser} />
                 </i>
                 <span>User</span>
               </li>
-              <li onClick={() => setPage(5)}>
+              <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(5);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
                 <i>
                   <FontAwesomeIcon icon={faMessage} />
                 </i>
                 <span>Message</span>
               </li>
-              <li onClick={() => setPage(6)}>
+              <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(6);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
                 <i>
                   <FontAwesomeIcon icon={faCircleQuestion} />
                 </i>
                 <span>Questions</span>
               </li>
-              <li onClick={() => setPage(7)}>
+              <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(7);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
                 <i>
-                  <FontAwesomeIcon icon={faCircleExclamation} />
+                  <FontAwesomeIcon icon={faFlag} />
                 </i>
-                <span>Warning</span>
+                <span>Report</span>
               </li>
-              <li onClick={() => setPage(8)}>
+              <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(8);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
                 <i>
                   <FontAwesomeIcon icon={faLayerGroup} />
                 </i>

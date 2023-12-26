@@ -1,7 +1,7 @@
 import { authedAxiosInstance } from ".";
 
-function getRoadmaps() {
-  return authedAxiosInstance.get("/roadmap");
+function getRoadmaps(page = 1, limit = 10) {
+  return authedAxiosInstance.get(`/roadmap?page=${page}&limit=${limit}`);
 }
 
 function getChartData(type) {
