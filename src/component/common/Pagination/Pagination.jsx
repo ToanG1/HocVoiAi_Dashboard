@@ -48,6 +48,7 @@ export default function Pagination({ pages, onPageChange }) {
           return (
             <button
               key={index}
+              className={currentPage === index ? "active" : ""}
               onClick={() => {
                 setCurrentPage(index);
                 onPageChange(index);
