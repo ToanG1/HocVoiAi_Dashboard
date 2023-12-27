@@ -29,6 +29,7 @@ export default function DataTable({
   onPageChange,
   updateData,
   deleteData,
+  createData,
 }) {
   const [selectedRow, setSelectedRow] = useState({});
 
@@ -154,7 +155,7 @@ export default function DataTable({
     deleteData(selectedRow);
     handleDeselectRow();
   }
-
+ 
   if (data[0]) {
     const properties = getAllFieldNames(data[0]);
 

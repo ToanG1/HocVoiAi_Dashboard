@@ -6,7 +6,7 @@ import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
 import { LineChart } from "../common/Chart/LineChart/LineChart";
 import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
 import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
-import { getCategories , getChartData,updateCategory,deleteCategory} from "../../api/category";
+import { getCategories , getChartData, updateCategory, deleteCategory, createCategory} from "../../api/category";
 import { toast } from "react-toastify";
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
@@ -94,6 +94,36 @@ export default function CategoryManagement() {
       .then((res) => {
         if (res.code === 200) {
           toast.success("Delete Category  successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
+  function handleCreateRow(data) {
+    console.log("create", data);
+    createCategory(data)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Create Category  successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
