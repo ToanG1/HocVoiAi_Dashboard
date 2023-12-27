@@ -156,7 +156,7 @@ export default function CategoryManagement() {
       <RadarChart />
       <DoughnutChart />
       <VerticalChart />
-      <DataTable data={category} pages={pages} updateData={handleUpdateRow}deleteData={handleDeleteRow}/>
+      <DataTable data={category} pages={pages} updateData={handleUpdateRow}deleteData={handleDeleteRow} createData={handleCreateRow}/>
      
     </>
   );

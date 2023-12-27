@@ -198,6 +198,7 @@ export default function DataTable({
   }
 
   function handleCreateRow() {
+    createData(selectedRow);
     console.log(selectedRow);
   }
 
