@@ -151,7 +151,7 @@ export default function QuestionManagement() {
         <VerticalChart />
       </div>
 
-      <DataTable data={data} pages={pages} />
+      <DataTable data={data} pages={pages}  updateData={handleUpdateRow} deleteData={handleDeleteRow}/>
     </>
   );
 }

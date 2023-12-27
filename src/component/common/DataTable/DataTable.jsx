@@ -29,6 +29,7 @@ export default function DataTable({
   onPageChange,
   updateData,
   deleteData,
+  createData,
 }) {
   const [selectedRow, setSelectedRow] = useState({});
   const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -197,6 +198,7 @@ export default function DataTable({
   }
 
   function handleCreateRow() {
+    createData(selectedRow);
     console.log(selectedRow);
   }
 

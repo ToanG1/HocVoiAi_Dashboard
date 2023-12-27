@@ -13,4 +13,7 @@ function updateCategory(data) {
 function deleteCategory(id) {
   return authedAxiosInstance.delete(`/category/${id}`);
 }
-export { getCategories,getChartData ,updateCategory,deleteCategory};
+function createCategory(data) {
+  return authedAxiosInstance.post(`/category`,data);
+}
+export { getCategories,getChartData ,updateCategory, deleteCategory, createCategory};

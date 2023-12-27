@@ -90,7 +90,7 @@ export default function UserManagement() {
   }
   function handleDeleteRow(data) {
     console.log("delete", data);
-    deleteUsers(data.id)
+    deleteUsers(data.uuid)
       .then((res) => {
         if (res.code === 200) {
           toast.success("Delete Users successfully", {
@@ -129,7 +129,7 @@ export default function UserManagement() {
         {/* <VerticalChart /> */}
       </div>
 
-      <DataTable data={data} pages={pages} />
+      <DataTable data={data} pages={pages} updateData={handleUpdateRow} deleteData={handleDeleteRow}/>
     </>
   );
 }
