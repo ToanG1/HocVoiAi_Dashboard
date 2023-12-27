@@ -7,10 +7,10 @@ function getChartData(type) {
   return authedAxiosInstance.get(`/user/chart?type=${type}`);
 }
 function updateUsers(data) {
-  return authedAxiosInstance.patch(`/user/${data.id}`, data);
+  return authedAxiosInstance.patch(`/user/${data.uuid}`, data);
 }
 
-function deleteUsers(id) {
-  return authedAxiosInstance.delete(`/user/${id}`);
+function deleteUsers(uuid) {
+  return authedAxiosInstance.delete(`/user/${uuid}`);
 }
 export { getUsers, getChartData, updateUsers, deleteUsers };
