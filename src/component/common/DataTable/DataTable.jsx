@@ -31,8 +31,49 @@ export default function DataTable({
   deleteData,
 }) {
   const [selectedRow, setSelectedRow] = useState({});
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  useEffect(() => {
+    if (data[0]) {
+      const newObject = Object.entries(data[0]).reduce(
+        (result, [key, value]) => {
+          const type = typeof value;
+
+          if (key.toUpperCase().includes("ID")) {
+            result[key] = 0;
+          } else if (type !== "object") {
+            if (
+              !isNaN(new Date(value)) &&
+              type === "string" &&
+              isNaN(Number(value))
+            ) {
+              result[key] = new Date().toDateString();
+            } else {
+              switch (type) {
+                case "number":
+                  result[key] = 0;
+                  break;
+                case "boolean":
+                  result[key] = false;
+                  break;
+                default:
+                  result[key] = "";
+              }
+            }
+          }
+
+          return result;
+        },
+        {}
+      );
+
+      console.log(newObject);
+      setSelectedRow(newObject);
+    }
+  }, [data]);
 
   function handleSelectRow(row) {
+    setIsFirstLoad(false);
     setSelectedRow(row);
   }
   //Render for DataTable
@@ -155,6 +196,10 @@ export default function DataTable({
     handleDeselectRow();
   }
 
+  function handleCreateRow() {
+    console.log(selectedRow);
+  }
+
   if (data[0]) {
     const properties = getAllFieldNames(data[0]);
 
@@ -187,13 +232,21 @@ export default function DataTable({
             <h2>Data</h2>
             <div className="list-data-field">{renderDataBox()}</div>
             <div className="data-box-btn">
-              <button onClick={handleDeselectRow}>Cancel</button>
-              <button onClick={handleUpdateRow} id="update">
-                Update
-              </button>
-              <button onClick={handleDeleteRow} id="delete">
-                Ban
-              </button>
+              {isFirstLoad ? (
+                <button id="create" onClick={handleCreateRow}>
+                  Create
+                </button>
+              ) : (
+                <>
+                  <button onClick={handleDeselectRow}>Cancel</button>
+                  <button onClick={handleUpdateRow} id="update">
+                    Update
+                  </button>
+                  <button onClick={handleDeleteRow} id="delete">
+                    Ban
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
