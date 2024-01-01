@@ -20,7 +20,7 @@ document.addEventListener("newToken", () => {
 });
 
 let retryCounter = 0;
-const MAX_RETRY = 3;
+const MAX_RETRY = 10;
 
 axiosInstance.interceptors.response.use((response) => {
   return response.data;
