@@ -8,7 +8,12 @@ import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
 import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
 import DataTable from "../common/DataTable/DataTable";
 
-import { getQuestions,getChartData, updateQuestion,deleteQuestion } from "../../api/question";
+import {
+  getQuestions,
+  getChartData,
+  updateQuestion,
+  deleteQuestion,
+} from "../../api/question";
 import { toast } from "react-toastify";
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
@@ -80,7 +85,6 @@ export default function QuestionManagement() {
     getData();
   }, []);
   function handleUpdateRow(data) {
-    console.log("update", data);
     updateQuestion(data)
       .then((res) => {
         if (res.code === 200) {
@@ -110,7 +114,6 @@ export default function QuestionManagement() {
       });
   }
   function handleDeleteRow(data) {
-    console.log("delete", data);
     deleteQuestion(data.id)
       .then((res) => {
         if (res.code === 200) {
@@ -151,7 +154,12 @@ export default function QuestionManagement() {
         <VerticalChart />
       </div>
 
-      <DataTable data={data} pages={pages}  updateData={handleUpdateRow} deleteData={handleDeleteRow}/>
+      <DataTable
+        data={data}
+        pages={pages}
+        updateData={handleUpdateRow}
+        deleteData={handleDeleteRow}
+      />
     </>
   );
 }

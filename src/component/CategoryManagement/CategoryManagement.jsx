@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CategoryManagement.scss";
 import DataTable from "../common/DataTable/DataTable";
-import { VerticalChart } from "../common/Chart/VerticalChart/VerticalChart";
-import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
-import { LineChart } from "../common/Chart/LineChart/LineChart";
-import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
-import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
-import { getCategories , getChartData, updateCategory, deleteCategory, createCategory} from "../../api/category";
+import {
+  getCategories,
+  getChartData,
+  updateCategory,
+  deleteCategory,
+  createCategory,
+} from "../../api/category";
 import { toast } from "react-toastify";
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
@@ -19,10 +20,7 @@ const handleGetChartData = async (type) => {
 export default function CategoryManagement() {
   const [category, setCategory] = useState([]);
   const [pages, setPages] = useState(0);
-  const [chartData, setChartData] = useState({
-    dataByMonth: null,
-    dataByCategory: null,
-  });
+
   useEffect(() => {
     getCategories()
       .then((res) => {
@@ -34,32 +32,8 @@ export default function CategoryManagement() {
       .catch((err) => {
         console.log(err);
       });
-      const getData = async () => {
-        const chartByMonthData = await handleGetChartData("month")
-          .then((res) => res)
-          .catch((err) => {
-            console.log(err);
-            return null;
-          });
-        const chartByCategoryData = await handleGetChartData("category")
-          .then((res) => res)
-          .catch((err) => {
-            console.log(err);
-            return null;
-          });
-  
-        setChartData({
-          dataByMonth: chartByMonthData,
-          dataByCategory: chartByCategoryData,
-        });
-      };
-    getData();
-
-
-
   }, []);
   function handleUpdateRow(data) {
-    console.log("update", data);
     updateCategory(data)
       .then((res) => {
         if (res.code === 200) {
@@ -89,7 +63,6 @@ export default function CategoryManagement() {
       });
   }
   function handleDeleteRow(data) {
-    console.log("delete", data);
     deleteCategory(data.id)
       .then((res) => {
         if (res.code === 200) {
@@ -119,7 +92,6 @@ export default function CategoryManagement() {
       });
   }
   function handleCreateRow(data) {
-    console.log("create", data);
     createCategory(data)
       .then((res) => {
         if (res.code === 200) {
@@ -151,13 +123,13 @@ export default function CategoryManagement() {
   return (
     <>
       <div className="title">Page Category Management</div>
-      <LineChart data={chartData.dataByMonth} />
-      <PolarAreaChart data={chartData.dataByCategory} />
-      <RadarChart />
-      <DoughnutChart />
-      <VerticalChart />
-      <DataTable data={category} pages={pages} updateData={handleUpdateRow}deleteData={handleDeleteRow} createData={handleCreateRow}/>
-     
+      <DataTable
+        data={category}
+        pages={pages}
+        updateData={handleUpdateRow}
+        deleteData={handleDeleteRow}
+        createData={handleCreateRow}
+      />
     </>
   );
 }

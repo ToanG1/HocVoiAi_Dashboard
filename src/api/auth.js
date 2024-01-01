@@ -16,8 +16,10 @@ async function handleLocalStorage(res) {
         "USER_ADMIN_INFO",
         JSON.stringify(res.data.USER_ADMIN_INFO)
       );
+      window.dispatchEvent(new Event("newToken"));
+
       resolve();
-    }, 500);
+    }, 100);
   });
 }
 
@@ -28,7 +30,7 @@ async function handleRemoveLocalStorage(res) {
       localStorage.removeItem("HOCVOIAI_ADMIN_REFRESHTOKEN");
       localStorage.removeItem("USER_ADMIN_INFO");
       resolve();
-    }, 500);
+    }, 100);
   });
 }
 

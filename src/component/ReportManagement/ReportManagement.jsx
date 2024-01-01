@@ -50,19 +50,10 @@ export default function ReportManagement() {
           console.log(err);
           return null;
         });
-      // const chartByRoadmapLanguage = await handleGetChartData(
-      //   "roadmap-language"
-      // )
-      //   .then((res) => res)
-      //   .catch((err) => {
-      //     console.log(err);
-      //     return null;
-      //   });
       setChartData({
         dataByMonth: chartByMonthData,
         dataByType: chartByTypeData,
         dataByProgress: chartByProgress,
-        // dataByLanguage: chartByRoadmapLanguage,
       });
     };
     getData();
@@ -73,7 +64,6 @@ export default function ReportManagement() {
     getReports(currentPage, 10)
       .then((res) => {
         if (res.code === 200) {
-          console.log(res);
           setData(res.data.data);
           setPages(Math.ceil(res.data.totalItems / res.data.limit));
         }

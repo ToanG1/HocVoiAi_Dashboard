@@ -29,7 +29,6 @@ import { ToastContainer } from "react-toastify";
 
 function handleRemoveActivate() {
   const items = document.getElementsByClassName("nav-item");
-  console.log(items);
   for (let i = 0; i < items.length; i++) {
     items[i].classList.remove("active");
   }

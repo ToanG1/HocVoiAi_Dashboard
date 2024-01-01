@@ -68,7 +68,6 @@ export default function DataTable({
         {}
       );
 
-      console.log(newObject);
       setSelectedRow(newObject);
     }
   }, [data]);
@@ -199,7 +198,6 @@ export default function DataTable({
 
   function handleCreateRow() {
     createData(selectedRow);
-    console.log(selectedRow);
   }
 
   if (data[0]) {
@@ -218,8 +216,8 @@ export default function DataTable({
                 </tr>
               </thead>
               <tbody>
-                {data.map((item) => (
-                  <tr onClick={() => handleSelectRow(item)}>
+                {data.map((item, i) => (
+                  <tr key={i} onClick={() => handleSelectRow(item)}>
                     {renderDataRow(item)}
                   </tr>
                 ))}

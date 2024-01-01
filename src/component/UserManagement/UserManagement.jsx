@@ -10,7 +10,12 @@ import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
 
 import { toast } from "react-toastify";
 
-import { getUsers,getChartData,updateUsers,deleteUsers } from "../../api/user";
+import {
+  getUsers,
+  getChartData,
+  updateUsers,
+  deleteUsers,
+} from "../../api/user";
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
   if (res.code === 200) {
@@ -59,7 +64,6 @@ export default function UserManagement() {
     getData();
   }, []);
   function handleUpdateRow(data) {
-    console.log("update", data);
     updateUsers(data)
       .then((res) => {
         if (res.code === 200) {
@@ -89,7 +93,6 @@ export default function UserManagement() {
       });
   }
   function handleDeleteRow(data) {
-    console.log("delete", data);
     deleteUsers(data.uuid)
       .then((res) => {
         if (res.code === 200) {
@@ -129,7 +132,12 @@ export default function UserManagement() {
         {/* <VerticalChart /> */}
       </div>
 
-      <DataTable data={data} pages={pages} updateData={handleUpdateRow} deleteData={handleDeleteRow}/>
+      <DataTable
+        data={data}
+        pages={pages}
+        updateData={handleUpdateRow}
+        deleteData={handleDeleteRow}
+      />
     </>
   );
 }

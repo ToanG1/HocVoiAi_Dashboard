@@ -99,7 +99,6 @@ export default function RoadmapManagement() {
   }, [currentPage]);
 
   function handleUpdateRow(data) {
-    console.log("update", data);
     updateRoadmap(data)
       .then((res) => {
         if (res.code === 200) {
@@ -129,7 +128,6 @@ export default function RoadmapManagement() {
       });
   }
   function handleDeleteRow(data) {
-    console.log("delete", data);
     deleteRoadmap(data.id)
       .then((res) => {
         if (res.code === 200) {
