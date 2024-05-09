@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
-import styles from "./RoadmapManagement.scss";
+import styles from "./QuestionManagement.scss";
 
-import DataTable from "../common/DataTable/DataTable";
-
-import { VerticalChart } from "../common/Chart/VerticalChart/VerticalChart";
-import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
-import { LineChart } from "../common/Chart/LineChart/LineChart";
-import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
-import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
+import { VerticalChart } from "../../common/Chart/VerticalChart/VerticalChart";
+import { DoughnutChart } from "../../common/Chart/DoughnutChart/DoughnutChart";
+import { LineChart } from "../../common/Chart/LineChart/LineChart";
+import { PolarAreaChart } from "../../common/Chart/PolarAreaChart/PolarAreaChart";
+import { RadarChart } from "../../common/Chart/RadarChart/RadarChart";
+import DataTable from "../../common/DataTable/DataTable";
 
 import {
-  getRoadmaps,
+  getQuestions,
   getChartData,
-  updateRoadmap,
-  deleteRoadmap,
-} from "../../api/roadmap";
-
+  updateQuestion,
+  deleteQuestion,
+} from "../../../api/question";
 import { toast } from "react-toastify";
-
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
   if (res.code === 200) {
@@ -27,19 +24,17 @@ const handleGetChartData = async (type) => {
   }
 };
 
-export default function RoadmapManagement() {
+export default function QuestionManagement() {
   const [data, setData] = useState([]);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [chartData, setChartData] = useState({
     dataByMonth: null,
     dataByCategory: null,
-    dataByLevel: null,
-    dataByLanguage: null,
-    dataByType: null,
+    dataByActivation: null,
+    dataByInteraction: null,
   });
   useEffect(() => {
-    // get chart data
     const getData = async () => {
       const chartByMonthData = await handleGetChartData("month")
         .then((res) => res)
@@ -53,21 +48,13 @@ export default function RoadmapManagement() {
           console.log(err);
           return null;
         });
-      const chartByRoadmapLevel = await handleGetChartData("roadmap-level")
+      const chartByActivationData = await handleGetChartData("activated")
         .then((res) => res)
         .catch((err) => {
           console.log(err);
           return null;
         });
-      const chartByRoadmapLanguage = await handleGetChartData(
-        "roadmap-language"
-      )
-        .then((res) => res)
-        .catch((err) => {
-          console.log(err);
-          return null;
-        });
-      const chartByRoadmapType = await handleGetChartData("roadmap-type")
+      const chartByInteraction = await handleGetChartData("interaction")
         .then((res) => res)
         .catch((err) => {
           console.log(err);
@@ -76,20 +63,22 @@ export default function RoadmapManagement() {
       setChartData({
         dataByMonth: chartByMonthData,
         dataByCategory: chartByCategoryData,
-        dataByLevel: chartByRoadmapLevel,
-        dataByLanguage: chartByRoadmapLanguage,
-        dataByType: chartByRoadmapType,
+        dataByActivation: chartByActivationData,
+        dataByInteraction: chartByInteraction,
       });
     };
     getData();
   }, []);
-
   useEffect(() => {
-    // get all Roadmaps to show in table
-    getRoadmaps(currentPage, 10)
+    getQuestions(currentPage)
       .then((res) => {
         if (res.code === 200) {
-          setData(res.data.data);
+          const result = res.data.data.map((item) => {
+            const { replies, comments, content, ...rest } = item;
+            return rest;
+          });
+
+          setData(result);
           setPages(Math.ceil(res.data.totalItems / res.data.limit));
         }
       })
@@ -98,11 +87,15 @@ export default function RoadmapManagement() {
       });
   }, [currentPage]);
 
+  function handlePageChange(page) {
+    setCurrentPage(page);
+  }
+
   function handleUpdateRow(data) {
-    updateRoadmap(data)
+    updateQuestion(data)
       .then((res) => {
         if (res.code === 200) {
-          toast.success("Update roadmap successfully", {
+          toast.success("Update question successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -128,10 +121,10 @@ export default function RoadmapManagement() {
       });
   }
   function handleDeleteRow(data) {
-    deleteRoadmap(data.id)
+    deleteQuestion(data.id)
       .then((res) => {
         if (res.code === 200) {
-          toast.success("Ban roadmap successfully", {
+          toast.success("Delete question successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -159,19 +152,19 @@ export default function RoadmapManagement() {
 
   return (
     <>
-      <div className="title">Roadmap Management</div>
+      <div className="title">Page QuestionManagement</div>
       <div className="chart-container">
         <LineChart data={chartData.dataByMonth} />
         <PolarAreaChart data={chartData.dataByCategory} />
-        <RadarChart data={chartData.dataByLanguage} />
-        <DoughnutChart data={chartData.dataByLevel} />
-        <VerticalChart data={chartData.dataByType} />
+        <RadarChart data={chartData.dataByInteraction} />
+        <DoughnutChart data={chartData.dataByActivation} />
+        <VerticalChart />
       </div>
 
       <DataTable
         data={data}
         pages={pages}
-        onPageChange={setCurrentPage}
+        onPageChange={handlePageChange}
         updateData={handleUpdateRow}
         deleteData={handleDeleteRow}
       />

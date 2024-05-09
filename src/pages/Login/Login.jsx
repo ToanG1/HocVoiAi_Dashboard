@@ -8,6 +8,7 @@ import logo from "../../assets/images/logo.png";
 import { login } from "../../api/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL, changeDomain } from "../../api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,11 +17,12 @@ export default function Login() {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-
+    const domain = document.getElementById("select-domain").value;
+    changeDomain(domain);
     login(email, password)
       .then((res) => {
         if (res) {
-          navigate("/admin");
+          navigate("/admin/roadmap");
         }
       })
       .catch((err) => {
@@ -55,6 +57,10 @@ export default function Login() {
             placeholder="Password"
             required="required"
           />
+          <select id="select-domain">
+            <option value="roadmap">ROADMAP</option>
+            <option value="social">SOCIAL</option>
+          </select>
           <button
             type="submit"
             className="btn btn-primary btn-block btn-large"

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./UserManagement.scss";
 
-import DataTable from "../common/DataTable/DataTable";
-import { VerticalChart } from "../common/Chart/VerticalChart/VerticalChart";
-import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
-import { LineChart } from "../common/Chart/LineChart/LineChart";
-import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
-import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
+import DataTable from "../../common/DataTable/DataTable";
+import { DoughnutChart } from "../../common/Chart/DoughnutChart/DoughnutChart";
+import { LineChart } from "../../common/Chart/LineChart/LineChart";
 
 import { toast } from "react-toastify";
 
@@ -15,7 +12,7 @@ import {
   getChartData,
   updateUsers,
   deleteUsers,
-} from "../../api/user";
+} from "../../../api/user";
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
   if (res.code === 200) {
@@ -28,21 +25,13 @@ const handleGetChartData = async (type) => {
 export default function UserManagement() {
   const [data, setData] = useState([]);
   const [pages, setPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [chartData, setChartData] = useState({
     dataByMonth: null,
     dataByActivation: null,
   });
+
   useEffect(() => {
-    getUsers()
-      .then((res) => {
-        if (res.code === 200) {
-          setData(res.data.data);
-          setPages(Math.ceil(res.data.totalItems / res.data.limit));
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     const getData = async () => {
       const chartByMonthData = await handleGetChartData("month")
         .then((res) => res)
@@ -63,6 +52,23 @@ export default function UserManagement() {
     };
     getData();
   }, []);
+  useEffect(() => {
+    getUsers(currentPage)
+      .then((res) => {
+        if (res.code === 200) {
+          setData(res.data.data);
+          setPages(Math.ceil(res.data.totalItems / res.data.limit));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [currentPage]);
+
+  function handlePageChange(page) {
+    setCurrentPage(page);
+  }
+
   function handleUpdateRow(data) {
     updateUsers(data)
       .then((res) => {
@@ -135,6 +141,7 @@ export default function UserManagement() {
       <DataTable
         data={data}
         pages={pages}
+        onPageChange={handlePageChange}
         updateData={handleUpdateRow}
         deleteData={handleDeleteRow}
       />

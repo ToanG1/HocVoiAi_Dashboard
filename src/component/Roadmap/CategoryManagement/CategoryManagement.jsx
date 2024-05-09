@@ -1,28 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CategoryManagement.scss";
-import DataTable from "../common/DataTable/DataTable";
+import DataTable from "../../common/DataTable/DataTable";
 import {
   getCategories,
-  getChartData,
   updateCategory,
   deleteCategory,
   createCategory,
-} from "../../api/category";
+} from "../../../api/category";
 import { toast } from "react-toastify";
-const handleGetChartData = async (type) => {
-  const res = await getChartData(type);
-  if (res.code === 200) {
-    return res.data;
-  } else {
-    return null;
-  }
-};
+
 export default function CategoryManagement() {
   const [category, setCategory] = useState([]);
   const [pages, setPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    getCategories()
+    getCategories(currentPage)
       .then((res) => {
         if (res.code === 200) {
           setCategory(res.data.data);
@@ -32,7 +25,10 @@ export default function CategoryManagement() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [currentPage]);
+  function handlePageChange(page) {
+    setCurrentPage(page);
+  }
   function handleUpdateRow(data) {
     updateCategory(data)
       .then((res) => {
@@ -126,6 +122,7 @@ export default function CategoryManagement() {
       <DataTable
         data={category}
         pages={pages}
+        onPageChange={handlePageChange}
         updateData={handleUpdateRow}
         deleteData={handleDeleteRow}
         createData={handleCreateRow}
