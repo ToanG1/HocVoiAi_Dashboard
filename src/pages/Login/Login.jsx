@@ -8,7 +8,6 @@ import logo from "../../assets/images/logo.png";
 import { login } from "../../api/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { handleAuthedInstance, changeDomain } from "../../api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,11 +17,11 @@ export default function Login() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const domain = document.getElementById("select-domain").value;
-    changeDomain(domain);
+    localStorage.clear();
+    localStorage.setItem("DOMAIN", domain);
     login(email, password)
       .then((res) => {
         if (res) {
-          handleAuthedInstance();
           navigate("/admin/" + domain);
         }
       })

@@ -1,26 +1,17 @@
-import { authedAxiosInstance, axiosInstance } from ".";
+import { BASE_URL, authedAxiosInstance, axiosInstance } from ".";
 
 async function handleLocalStorage(res) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      localStorage.removeItem("HOCVOIAI_ADMIN_TOKEN");
-      localStorage.removeItem("HOCVOIAI_ADMIN_REFRESHTOKEN");
-      localStorage.removeItem("USER_ADMIN_INFO");
+  localStorage.removeItem("HOCVOIAI_ADMIN_TOKEN");
+  localStorage.removeItem("HOCVOIAI_ADMIN_REFRESHTOKEN");
+  localStorage.removeItem("USER_ADMIN_INFO");
 
-      localStorage.setItem("HOCVOIAI_ADMIN_TOKEN", res.data.access_token);
-      localStorage.setItem(
-        "HOCVOIAI_ADMIN_REFRESHTOKEN",
-        res.data.refersh_token
-      );
-      localStorage.setItem(
-        "USER_ADMIN_INFO",
-        JSON.stringify(res.data.USER_ADMIN_INFO)
-      );
-      window.dispatchEvent(new Event("newToken"));
-
-      resolve();
-    }, 100);
-  });
+  localStorage.setItem("HOCVOIAI_ADMIN_TOKEN", res.data.access_token);
+  localStorage.setItem("HOCVOIAI_ADMIN_REFRESHTOKEN", res.data.refersh_token);
+  localStorage.setItem(
+    "USER_ADMIN_INFO",
+    JSON.stringify(res.data.USER_ADMIN_INFO)
+  );
+  window.dispatchEvent(new Event("newToken"));
 }
 
 async function handleRemoveLocalStorage(res) {
@@ -39,11 +30,13 @@ async function login(email, password) {
     email,
     password,
   });
-  if (res.code === 200)
-    return handleLocalStorage(res).then(() => {
-      return true;
-    });
-  else return false;
+  if (res.code === 200) {
+    authedAxiosInstance.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${res.data.access_token}`;
+    handleLocalStorage(res);
+    return true;
+  } else return false;
 }
 
 async function logout() {
