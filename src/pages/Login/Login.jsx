@@ -8,7 +8,7 @@ import logo from "../../assets/images/logo.png";
 import { login } from "../../api/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BASE_URL, changeDomain } from "../../api";
+import { handleAuthedInstance, changeDomain } from "../../api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -22,7 +22,8 @@ export default function Login() {
     login(email, password)
       .then((res) => {
         if (res) {
-          navigate("/admin/roadmap");
+          handleAuthedInstance();
+          navigate("/admin/" + domain);
         }
       })
       .catch((err) => {

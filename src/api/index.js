@@ -18,6 +18,13 @@ function changeDomain(domain) {
   axiosInstance = axios.create({
     baseURL: BASE_URL,
   });
+
+  axiosInstance.interceptors.response.use((response) => {
+    return response.data;
+  });
+}
+
+function handleAuthedInstance() {
   authedAxiosInstance = axios.create({
     baseURL: BASE_URL,
   });
@@ -25,10 +32,6 @@ function changeDomain(domain) {
     authedAxiosInstance.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${localStorage.getItem("HOCVOIAI_ADMIN_TOKEN")}`;
-  });
-
-  axiosInstance.interceptors.response.use((response) => {
-    return response.data;
   });
 
   authedAxiosInstance.interceptors.response.use(
@@ -61,15 +64,15 @@ function changeDomain(domain) {
       return Promise.reject(error);
     }
   );
-
-  // Function to refresh the token (replace this with your actual token refresh logic)
-  const refreshToken = async () => {
-    const data = {
-      refreshToken: localStorage.getItem("HOCVOIAI_ADMIN_REFRESHTOKEN"),
-    };
-    return axiosInstance.post(`/auth/refresh`, data);
-  };
 }
+
+// Function to refresh the token (replace this with your actual token refresh logic)
+const refreshToken = async () => {
+  const data = {
+    refreshToken: localStorage.getItem("HOCVOIAI_ADMIN_REFRESHTOKEN"),
+  };
+  return axiosInstance.post(`/auth/refresh`, data);
+};
 
 export {
   BASE_URL,
@@ -78,4 +81,5 @@ export {
   axiosInstance,
   authedAxiosInstance,
   changeDomain,
+  handleAuthedInstance,
 };
