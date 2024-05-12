@@ -4,6 +4,7 @@ import styles from "./DataTable.scss";
 import Pagination from "../Pagination/Pagination";
 
 import { renderFormatedDate } from "../../../services/common";
+const listFields = ["images", "videos"];
 
 function getAllFieldNames(obj, prefix = "") {
   let fieldNames = [];
@@ -11,7 +12,11 @@ function getAllFieldNames(obj, prefix = "") {
   for (const key in obj) {
     const fieldName = prefix + key;
 
-    if (typeof obj[key] === "object" && obj[key] !== null) {
+    if (
+      typeof obj[key] === "object" &&
+      obj[key] !== null &&
+      !listFields.includes(key)
+    ) {
       // Recursively get field names from nested object
       const nestedFieldNames = getAllFieldNames(obj[key], fieldName + ".");
       fieldNames = fieldNames.concat(nestedFieldNames);
@@ -79,6 +84,15 @@ export default function DataTable({
   //Render for DataTable
   function renderDataRow(item) {
     return Object.entries(item).map(([key, value]) => {
+      if (listFields.includes(key)) {
+        return (
+          <td>
+            {value.map((img) => (
+              <img src={img} className="sm-img" alt={key} />
+            ))}
+          </td>
+        );
+      }
       if (key !== "content") return renderCellData(value, typeof value);
     });
   }

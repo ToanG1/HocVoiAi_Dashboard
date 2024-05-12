@@ -2,17 +2,10 @@ import React, { useState, useEffect } from "react";
 import styles from "./SocialDashboard.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faList,
-  faUser,
-  faCircleQuestion,
-  faMessage,
-  faFlag,
-  faLayerGroup,
-  faArrowRightFromBracket,
-} from "@fortawesome/free-solid-svg-icons";
+import { faList } from "@fortawesome/free-solid-svg-icons";
 
 import MainPage from "../../component/Roadmap/MainPage/MainPage";
+import PostManagement from "../../component/Social/PostManagement/PostManagement";
 import logo from "../../assets/images/logo.png";
 
 import { checkAuthenticationInApp } from "../../services/common";
@@ -62,72 +55,7 @@ export default function SocialDashboard() {
                 <i>
                   <FontAwesomeIcon icon={faList} />
                 </i>
-                <span>Category</span>
-              </li>
-              <li
-                className="nav-item"
-                onClick={(e) => {
-                  setPage(4);
-                  handleRemoveActivate();
-                  e.currentTarget.classList.add("active");
-                }}
-              >
-                <i>
-                  <FontAwesomeIcon icon={faUser} />
-                </i>
-                <span>User</span>
-              </li>
-              <li
-                className="nav-item"
-                onClick={(e) => {
-                  setPage(5);
-                  handleRemoveActivate();
-                  e.currentTarget.classList.add("active");
-                }}
-              >
-                <i>
-                  <FontAwesomeIcon icon={faMessage} />
-                </i>
-                <span>Message</span>
-              </li>
-              <li
-                className="nav-item"
-                onClick={(e) => {
-                  setPage(6);
-                  handleRemoveActivate();
-                  e.currentTarget.classList.add("active");
-                }}
-              >
-                <i>
-                  <FontAwesomeIcon icon={faCircleQuestion} />
-                </i>
-                <span>Questions</span>
-              </li>
-              <li
-                className="nav-item"
-                onClick={(e) => {
-                  setPage(7);
-                  handleRemoveActivate();
-                  e.currentTarget.classList.add("active");
-                }}
-              >
-                <i>
-                  <FontAwesomeIcon icon={faFlag} />
-                </i>
-                <span>Report</span>
-              </li>
-              <li
-                className="nav-item"
-                onClick={(e) => {
-                  setPage(8);
-                  handleRemoveActivate();
-                  e.currentTarget.classList.add("active");
-                }}
-              >
-                <i>
-                  <FontAwesomeIcon icon={faLayerGroup} />
-                </i>
-                <span>Roadmap</span>
+                <span>Post</span>
               </li>
             </ul>
           </div>
@@ -143,7 +71,7 @@ function renderPage(page) {
     case 1:
       return <MainPage />;
     case 2:
-      return <h1>2</h1>;
+      return <PostManagement />;
     default:
       return <MainPage />;
   }

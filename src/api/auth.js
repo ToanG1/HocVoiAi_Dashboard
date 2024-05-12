@@ -1,4 +1,4 @@
-import { BASE_URL, authedAxiosInstance, axiosInstance } from ".";
+import { authedAxiosInstance, axiosInstance } from ".";
 
 async function handleLocalStorage(res) {
   localStorage.removeItem("HOCVOIAI_ADMIN_TOKEN");
