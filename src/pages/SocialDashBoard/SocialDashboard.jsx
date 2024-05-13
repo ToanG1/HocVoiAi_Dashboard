@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./SocialDashboard.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faList } from "@fortawesome/free-solid-svg-icons";
+import { faList, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import MainPage from "../../component/Roadmap/MainPage/MainPage";
 import PostManagement from "../../component/Social/PostManagement/PostManagement";
@@ -10,6 +10,7 @@ import logo from "../../assets/images/logo.png";
 
 import { checkAuthenticationInApp } from "../../services/common";
 import { ToastContainer } from "react-toastify";
+import UserManagement from "../../component/Social/UserManagement/UserManagement";
 
 function handleRemoveActivate() {
   const items = document.getElementsByClassName("nav-item");
@@ -57,6 +58,19 @@ export default function SocialDashboard() {
                 </i>
                 <span>Post</span>
               </li>
+              <li
+                className="nav-item"
+                onClick={(e) => {
+                  setPage(3);
+                  handleRemoveActivate();
+                  e.currentTarget.classList.add("active");
+                }}
+              >
+                <i>
+                  <FontAwesomeIcon icon={faUser} />
+                </i>
+                <span>User</span>
+              </li>
             </ul>
           </div>
         </div>
@@ -72,6 +86,8 @@ function renderPage(page) {
       return <MainPage />;
     case 2:
       return <PostManagement />;
+    case 3:
+      return <UserManagement />;
     default:
       return <MainPage />;
   }
