@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ReportManagement.scss";
 
-import DataTable from "../common/DataTable/DataTable";
-import { VerticalChart } from "../common/Chart/VerticalChart/VerticalChart";
-import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
-import { LineChart } from "../common/Chart/LineChart/LineChart";
-import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
-import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
+import DataTable from "../../common/DataTable/DataTable";
+import { DoughnutChart } from "../../common/Chart/DoughnutChart/DoughnutChart";
+import { LineChart } from "../../common/Chart/LineChart/LineChart";
+import { PolarAreaChart } from "../../common/Chart/PolarAreaChart/PolarAreaChart";
 
-import { getReports, getChartData } from "../../api/report";
+import { getReports, getChartData } from "../../../api/report";
 
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
@@ -50,19 +48,10 @@ export default function ReportManagement() {
           console.log(err);
           return null;
         });
-      // const chartByRoadmapLanguage = await handleGetChartData(
-      //   "roadmap-language"
-      // )
-      //   .then((res) => res)
-      //   .catch((err) => {
-      //     console.log(err);
-      //     return null;
-      //   });
       setChartData({
         dataByMonth: chartByMonthData,
         dataByType: chartByTypeData,
         dataByProgress: chartByProgress,
-        // dataByLanguage: chartByRoadmapLanguage,
       });
     };
     getData();
@@ -73,7 +62,6 @@ export default function ReportManagement() {
     getReports(currentPage, 10)
       .then((res) => {
         if (res.code === 200) {
-          console.log(res);
           setData(res.data.data);
           setPages(Math.ceil(res.data.totalItems / res.data.limit));
         }

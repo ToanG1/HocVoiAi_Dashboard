@@ -16,11 +16,13 @@ export default function Login() {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-
+    const domain = document.getElementById("select-domain").value;
+    localStorage.clear();
+    localStorage.setItem("DOMAIN", domain);
     login(email, password)
       .then((res) => {
         if (res) {
-          navigate("/admin");
+          navigate("/admin/" + domain);
         }
       })
       .catch((err) => {
@@ -55,6 +57,10 @@ export default function Login() {
             placeholder="Password"
             required="required"
           />
+          <select id="select-domain">
+            <option value="roadmap">ROADMAP</option>
+            <option value="social">SOCIAL</option>
+          </select>
           <button
             type="submit"
             className="btn btn-primary btn-block btn-large"

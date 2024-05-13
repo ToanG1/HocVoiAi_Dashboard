@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
-import styles from "./QuestionManagement.scss";
+import styles from "./RoadmapManagement.scss";
 
-import { VerticalChart } from "../common/Chart/VerticalChart/VerticalChart";
-import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
-import { LineChart } from "../common/Chart/LineChart/LineChart";
-import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
-import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
-import DataTable from "../common/DataTable/DataTable";
+import DataTable from "../../common/DataTable/DataTable";
 
-import { getQuestions,getChartData, updateQuestion,deleteQuestion } from "../../api/question";
+import { VerticalChart } from "../../common/Chart/VerticalChart/VerticalChart";
+import { DoughnutChart } from "../../common/Chart/DoughnutChart/DoughnutChart";
+import { LineChart } from "../../common/Chart/LineChart/LineChart";
+import { PolarAreaChart } from "../../common/Chart/PolarAreaChart/PolarAreaChart";
+import { RadarChart } from "../../common/Chart/RadarChart/RadarChart";
+
+import {
+  getRoadmaps,
+  getChartData,
+  updateRoadmap,
+  deleteRoadmap,
+} from "../../../api/roadmap";
+
 import { toast } from "react-toastify";
+
 const handleGetChartData = async (type) => {
   const res = await getChartData(type);
   if (res.code === 200) {
@@ -19,32 +27,19 @@ const handleGetChartData = async (type) => {
   }
 };
 
-export default function QuestionManagement() {
+export default function RoadmapManagement() {
   const [data, setData] = useState([]);
   const [pages, setPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [chartData, setChartData] = useState({
     dataByMonth: null,
     dataByCategory: null,
-    dataByActivation: null,
-    dataByInteraction: null,
+    dataByLevel: null,
+    dataByLanguage: null,
+    dataByType: null,
   });
   useEffect(() => {
-    getQuestions()
-      .then((res) => {
-        if (res.code === 200) {
-          const result = res.data.data.map((item) => {
-            const { replies, comments, content, ...rest } = item;
-            return rest;
-          });
-
-          setData(result);
-          setPages(Math.ceil(res.data.totalItems / res.data.limit));
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+    // get chart data
     const getData = async () => {
       const chartByMonthData = await handleGetChartData("month")
         .then((res) => res)
@@ -58,13 +53,21 @@ export default function QuestionManagement() {
           console.log(err);
           return null;
         });
-      const chartByActivationData = await handleGetChartData("activated")
+      const chartByRoadmapLevel = await handleGetChartData("roadmap-level")
         .then((res) => res)
         .catch((err) => {
           console.log(err);
           return null;
         });
-      const chartByInteraction = await handleGetChartData("interaction")
+      const chartByRoadmapLanguage = await handleGetChartData(
+        "roadmap-language"
+      )
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+          return null;
+        });
+      const chartByRoadmapType = await handleGetChartData("roadmap-type")
         .then((res) => res)
         .catch((err) => {
           console.log(err);
@@ -73,18 +76,33 @@ export default function QuestionManagement() {
       setChartData({
         dataByMonth: chartByMonthData,
         dataByCategory: chartByCategoryData,
-        dataByActivation: chartByActivationData,
-        dataByInteraction: chartByInteraction,
+        dataByLevel: chartByRoadmapLevel,
+        dataByLanguage: chartByRoadmapLanguage,
+        dataByType: chartByRoadmapType,
       });
     };
     getData();
   }, []);
-  function handleUpdateRow(data) {
-    console.log("update", data);
-    updateQuestion(data)
+
+  useEffect(() => {
+    // get all Roadmaps to show in table
+    getRoadmaps(currentPage, 10)
       .then((res) => {
         if (res.code === 200) {
-          toast.success("Update question successfully", {
+          setData(res.data.data);
+          setPages(Math.ceil(res.data.totalItems / res.data.limit));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [currentPage]);
+
+  function handleUpdateRow(data) {
+    updateRoadmap(data)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Update roadmap successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -110,11 +128,10 @@ export default function QuestionManagement() {
       });
   }
   function handleDeleteRow(data) {
-    console.log("delete", data);
-    deleteQuestion(data.id)
+    deleteRoadmap(data.id)
       .then((res) => {
         if (res.code === 200) {
-          toast.success("Delete question successfully", {
+          toast.success("Ban roadmap successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -142,16 +159,22 @@ export default function QuestionManagement() {
 
   return (
     <>
-      <div className="title">Page QuestionManagement</div>
+      <div className="title">Roadmap Management</div>
       <div className="chart-container">
         <LineChart data={chartData.dataByMonth} />
         <PolarAreaChart data={chartData.dataByCategory} />
-        <RadarChart data={chartData.dataByInteraction} />
-        <DoughnutChart data={chartData.dataByActivation} />
-        <VerticalChart />
+        <RadarChart data={chartData.dataByLanguage} />
+        <DoughnutChart data={chartData.dataByLevel} />
+        <VerticalChart data={chartData.dataByType} />
       </div>
 
-      <DataTable data={data} pages={pages}  updateData={handleUpdateRow} deleteData={handleDeleteRow}/>
+      <DataTable
+        data={data}
+        pages={pages}
+        onPageChange={setCurrentPage}
+        updateData={handleUpdateRow}
+        deleteData={handleDeleteRow}
+      />
     </>
   );
 }

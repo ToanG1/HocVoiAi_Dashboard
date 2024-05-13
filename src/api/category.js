@@ -1,7 +1,9 @@
 import { authedAxiosInstance } from ".";
 
-function getCategories() {
-  return authedAxiosInstance.get("/category");
+function getCategories(currentPage = 1, limit = 10) {
+  return authedAxiosInstance.get(
+    `/category?page=${currentPage}&limit=${limit}`
+  );
 }
 function getChartData(type) {
   return authedAxiosInstance.get(`/category/chart?type=${type}`);
@@ -14,6 +16,12 @@ function deleteCategory(id) {
   return authedAxiosInstance.delete(`/category/${id}`);
 }
 function createCategory(data) {
-  return authedAxiosInstance.post(`/category`,data);
+  return authedAxiosInstance.post(`/category`, data);
 }
-export { getCategories,getChartData ,updateCategory, deleteCategory, createCategory};
+export {
+  getCategories,
+  getChartData,
+  updateCategory,
+  deleteCategory,
+  createCategory,
+};

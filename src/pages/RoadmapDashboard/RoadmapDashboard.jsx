@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Dashboard.scss";
+import styles from "./RoadmapDashboard.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCompass,
   faList,
-  faTag,
   faUser,
   faCircleQuestion,
   faMessage,
@@ -13,15 +11,15 @@ import {
   faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 
-import MainPage from "../../component/MainPage/MainPage";
-import PageManagement from "../../component/PageManagement/PageManagement";
-import CategoryManagement from "../../component/CategoryManagement/CategoryManagement";
-import Message from "../../component/Message/Message";
-import TagManagement from "../../component/TagManagement/TagManagement";
-import UserManagement from "../../component/UserManagement/UserManagement";
-import QuestionManagement from "../../component/QuestionManagement/QuestionManagement";
-import WarningManagement from "../../component/ReportManagement/ReportManagement";
-import RoadmapManagement from "../../component/RoadmapManagement/RoadmapManagement";
+import MainPage from "../../component/Roadmap/MainPage/MainPage";
+import PageManagement from "../../component/Roadmap/PageManagement/PageManagement";
+import CategoryManagement from "../../component/Roadmap/CategoryManagement/CategoryManagement";
+import Message from "../../component/Roadmap/Message/Message";
+import TagManagement from "../../component/Roadmap/TagManagement/TagManagement";
+import UserManagement from "../../component/Roadmap/UserManagement/UserManagement";
+import QuestionManagement from "../../component/Roadmap/QuestionManagement/QuestionManagement";
+import WarningManagement from "../../component/Roadmap/ReportManagement/ReportManagement";
+import RoadmapManagement from "../../component/Roadmap/RoadmapManagement/RoadmapManagement";
 import logo from "../../assets/images/logo.png";
 
 import { checkAuthenticationInApp } from "../../services/common";
@@ -29,13 +27,12 @@ import { ToastContainer } from "react-toastify";
 
 function handleRemoveActivate() {
   const items = document.getElementsByClassName("nav-item");
-  console.log(items);
   for (let i = 0; i < items.length; i++) {
     items[i].classList.remove("active");
   }
 }
 
-export default function Dashboard() {
+export default function RoadmapDashboard() {
   const [page, setPage] = useState(0);
 
   useEffect(() => {
@@ -61,19 +58,6 @@ export default function Dashboard() {
 
           <div className="navigation">
             <ul>
-              {/* <li
-                className="nav-item"
-                onClick={(e) => {
-                  setPage(1);
-                  handleRemoveActivate();
-                  e.currentTarget.classList.add("active");
-                }}
-              >
-                <i>
-                  <FontAwesomeIcon icon={faCompass} />
-                </i>
-                <span>Page</span>
-              </li> */}
               <li
                 className="nav-item"
                 onClick={(e) => {
@@ -87,19 +71,6 @@ export default function Dashboard() {
                 </i>
                 <span>Category</span>
               </li>
-              {/* <li
-                className="nav-item"
-                onClick={(e) => {
-                  setPage(3);
-                  handleRemoveActivate();
-                  e.currentTarget.classList.add("active");
-                }}
-              >
-                <i>
-                  <FontAwesomeIcon icon={faTag} />
-                </i>
-                <span>Tag</span>
-              </li> */}
               <li
                 className="nav-item"
                 onClick={(e) => {

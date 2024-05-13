@@ -1,45 +1,34 @@
 import React, { useState, useEffect } from "react";
-import styles from "./RoadmapManagement.scss";
-
-import DataTable from "../common/DataTable/DataTable";
-
-import { VerticalChart } from "../common/Chart/VerticalChart/VerticalChart";
-import { DoughnutChart } from "../common/Chart/DoughnutChart/DoughnutChart";
-import { LineChart } from "../common/Chart/LineChart/LineChart";
-import { PolarAreaChart } from "../common/Chart/PolarAreaChart/PolarAreaChart";
-import { RadarChart } from "../common/Chart/RadarChart/RadarChart";
-
-import {
-  getRoadmaps,
-  getChartData,
-  updateRoadmap,
-  deleteRoadmap,
-} from "../../api/roadmap";
-
+import styles from "./PostManagement.scss";
+import DataTable from "../../common/DataTable/DataTable";
 import { toast } from "react-toastify";
+import {
+  getPostData,
+  getPostChartData,
+  updatePost,
+  deletePost,
+} from "../../../api/post";
+
+import { DoughnutChart } from "../../common/Chart/DoughnutChart/DoughnutChart";
+import { LineChart } from "../../common/Chart/LineChart/LineChart";
 
 const handleGetChartData = async (type) => {
-  const res = await getChartData(type);
+  const res = await getPostChartData(type);
   if (res.code === 200) {
     return res.data;
   } else {
     return null;
   }
 };
-
-export default function RoadmapManagement() {
-  const [data, setData] = useState([]);
+export default function PostManagement() {
+  const [post, setPost] = useState([]);
   const [pages, setPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [chartData, setChartData] = useState({
     dataByMonth: null,
-    dataByCategory: null,
-    dataByLevel: null,
-    dataByLanguage: null,
-    dataByType: null,
+    dataByActivation: null,
   });
   useEffect(() => {
-    // get chart data
     const getData = async () => {
       const chartByMonthData = await handleGetChartData("month")
         .then((res) => res)
@@ -47,27 +36,7 @@ export default function RoadmapManagement() {
           console.log(err);
           return null;
         });
-      const chartByCategoryData = await handleGetChartData("category")
-        .then((res) => res)
-        .catch((err) => {
-          console.log(err);
-          return null;
-        });
-      const chartByRoadmapLevel = await handleGetChartData("roadmap-level")
-        .then((res) => res)
-        .catch((err) => {
-          console.log(err);
-          return null;
-        });
-      const chartByRoadmapLanguage = await handleGetChartData(
-        "roadmap-language"
-      )
-        .then((res) => res)
-        .catch((err) => {
-          console.log(err);
-          return null;
-        });
-      const chartByRoadmapType = await handleGetChartData("roadmap-type")
+      const chartByActivationData = await handleGetChartData("activated")
         .then((res) => res)
         .catch((err) => {
           console.log(err);
@@ -75,21 +44,16 @@ export default function RoadmapManagement() {
         });
       setChartData({
         dataByMonth: chartByMonthData,
-        dataByCategory: chartByCategoryData,
-        dataByLevel: chartByRoadmapLevel,
-        dataByLanguage: chartByRoadmapLanguage,
-        dataByType: chartByRoadmapType,
+        dataByActivation: chartByActivationData,
       });
     };
     getData();
   }, []);
-
   useEffect(() => {
-    // get all Roadmaps to show in table
-    getRoadmaps(currentPage, 10)
+    getPostData(currentPage)
       .then((res) => {
         if (res.code === 200) {
-          setData(res.data.data);
+          setPost(res.data.data);
           setPages(Math.ceil(res.data.totalItems / res.data.limit));
         }
       })
@@ -98,12 +62,15 @@ export default function RoadmapManagement() {
       });
   }, [currentPage]);
 
+  function handlePageChange(page) {
+    setCurrentPage(page);
+  }
+
   function handleUpdateRow(data) {
-    console.log("update", data);
-    updateRoadmap(data)
+    updatePost(data)
       .then((res) => {
         if (res.code === 200) {
-          toast.success("Update roadmap successfully", {
+          toast.success("Update Post  successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -129,11 +96,10 @@ export default function RoadmapManagement() {
       });
   }
   function handleDeleteRow(data) {
-    console.log("delete", data);
-    deleteRoadmap(data.id)
+    deletePost(data.id)
       .then((res) => {
         if (res.code === 200) {
-          toast.success("Ban roadmap successfully", {
+          toast.success("Delete Post  successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -158,24 +124,33 @@ export default function RoadmapManagement() {
         });
       });
   }
+  function handleCreateRow(data) {
+    toast.error("Create post is not supported", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
 
   return (
     <>
-      <div className="title">Roadmap Management</div>
+      <div className="title">Page Post Management</div>
       <div className="chart-container">
         <LineChart data={chartData.dataByMonth} />
-        <PolarAreaChart data={chartData.dataByCategory} />
-        <RadarChart data={chartData.dataByLanguage} />
-        <DoughnutChart data={chartData.dataByLevel} />
-        <VerticalChart data={chartData.dataByType} />
+        <DoughnutChart data={chartData.dataByActivation} />
       </div>
-
       <DataTable
-        data={data}
+        data={post}
         pages={pages}
-        onPageChange={setCurrentPage}
+        onPageChange={handlePageChange}
         updateData={handleUpdateRow}
         deleteData={handleDeleteRow}
+        createData={handleCreateRow}
       />
     </>
   );

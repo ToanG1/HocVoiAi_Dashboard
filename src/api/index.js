@@ -1,32 +1,22 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5001/api/admin";
+const domain = localStorage.getItem("DOMAIN");
+
+let BASE_URL =
+  domain === "roadmap"
+    ? "http://localhost:5001/api/admin"
+    : "http://localhost:5003/api/admin";
 const IMG_URL = "http://localhost:9000";
 const WS_SERVER = "ws://localhost:5001/";
-
-const axiosInstance = axios.create({
+let axiosInstance = axios.create({
   baseURL: BASE_URL,
 });
-
-function getToken() {
-  const token = localStorage.getItem("HOCVOIAI_ADMIN_TOKEN");
-  if (token === null) {
-    setInterval(() => {
-      getToken();
-    }, 500);
-  }
-  return token;
-}
-
-const authedAxiosInstance = axios.create({
+let authedAxiosInstance = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    Authorization: `Bearer ${getToken()}`,
-  },
 });
 
 let retryCounter = 0;
-const MAX_RETRY = 3;
+const MAX_RETRY = 10;
 
 axiosInstance.interceptors.response.use((response) => {
   return response.data;
@@ -50,6 +40,7 @@ authedAxiosInstance.interceptors.response.use(
       const { data } = await refreshToken();
       localStorage.removeItem("HOCVOIAI_ADMIN_TOKEN");
       localStorage.setItem("HOCVOIAI_ADMIN_TOKEN", data.access_token);
+      window.dispatchEvent(new Event("newToken"));
 
       // Update the Authorization header with the new token
       authedAxiosInstance.defaults.headers.common[

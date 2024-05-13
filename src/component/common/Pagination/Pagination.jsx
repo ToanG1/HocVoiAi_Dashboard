@@ -13,7 +13,6 @@ export default function Pagination({ pages, onPageChange }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [startPage, setStartPage] = useState(0);
   const [endPage, setEndPage] = useState(pageToShow);
-
   useEffect(() => {
     const start = Math.max(0, currentPage - Math.floor(pageToShow / 2));
     const end = Math.min(pages - 1, start + pageToShow - 1);
@@ -35,6 +34,12 @@ export default function Pagination({ pages, onPageChange }) {
       onPageChange(currentPage + 1);
     }
   }
+
+  function handlePageChange(page) {
+    setCurrentPage(page);
+    onPageChange(page);
+  }
+
   return (
     <div className="pagination-container">
       <button onClick={handleBackWardPage}>
@@ -50,8 +55,7 @@ export default function Pagination({ pages, onPageChange }) {
               key={index}
               className={currentPage === index ? "active" : ""}
               onClick={() => {
-                setCurrentPage(index);
-                onPageChange(index);
+                handlePageChange(index);
               }}
             >
               {index + 1}

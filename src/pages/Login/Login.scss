@@ -7,6 +7,14 @@
   width: 300px;
   height: 300px;
 
+  #select-domain {
+    border-radius: 2px;
+    background-color: rgba(100, 100, 100, 0.4);
+    color: white;
+    padding: 4px 10px 4px;
+    margin-bottom: 10px;
+  }
+
   .btn {
     display: inline-block;
     *display: inline;
