@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import styles from "./PostManagement.scss";
 import DataTable from "../../common/DataTable/DataTable";
 import { toast } from "react-toastify";
-import { getPostData, getPostChartData } from "../../../api/post";
+import {
+  getPostData,
+  getPostChartData,
+  updatePost,
+  deletePost,
+} from "../../../api/post";
 
 import { DoughnutChart } from "../../common/Chart/DoughnutChart/DoughnutChart";
 import { LineChart } from "../../common/Chart/LineChart/LineChart";
@@ -56,96 +61,82 @@ export default function PostManagement() {
         console.log(err);
       });
   }, [currentPage]);
+
   function handlePageChange(page) {
     setCurrentPage(page);
   }
-  // function handleUpdateRow(data) {
-  //   updatePost(data)
-  //     .then((res) => {
-  //       if (res.code === 200) {
-  //         toast.success("Update Post  successfully", {
-  //           position: "top-right",
-  //           autoClose: 5000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       toast.error(err.response.data.message, {
-  //         position: "top-right",
-  //         autoClose: 5000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     });
-  // }
-  // function handleDeleteRow(data) {
-  //   deletePost(data.id)
-  //     .then((res) => {
-  //       if (res.code === 200) {
-  //         toast.success("Delete Post  successfully", {
-  //           position: "top-right",
-  //           autoClose: 5000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       toast.error(err.response.data.message, {
-  //         position: "top-right",
-  //         autoClose: 5000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     });
-  // }
-  // function handleCreateRow(data) {
-  //   createPost(data)
-  //     .then((res) => {
-  //       if (res.code === 200) {
-  //         toast.success("Create Post  successfully", {
-  //           position: "top-right",
-  //           autoClose: 5000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       toast.error(err.response.data.message, {
-  //         position: "top-right",
-  //         autoClose: 5000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     });
-  // }
+
+  function handleUpdateRow(data) {
+    updatePost(data)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Update Post  successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
+  function handleDeleteRow(data) {
+    deletePost(data.id)
+      .then((res) => {
+        if (res.code === 200) {
+          toast.success("Delete Post  successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
+  function handleCreateRow(data) {
+    toast.error("Create post is not supported", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+
   return (
     <>
       <div className="title">Page Post Management</div>
@@ -157,9 +148,9 @@ export default function PostManagement() {
         data={post}
         pages={pages}
         onPageChange={handlePageChange}
-        // updateData={handleUpdateRow}
-        // deleteData={handleDeleteRow}
-        // createData={handleCreateRow}
+        updateData={handleUpdateRow}
+        deleteData={handleDeleteRow}
+        createData={handleCreateRow}
       />
     </>
   );
