@@ -4,10 +4,10 @@ const domain = localStorage.getItem("DOMAIN");
 
 let BASE_URL =
   domain === "roadmap"
-    ? "http://localhost:5001/api/admin"
-    : "http://localhost:5003/api/admin";
-const IMG_URL = "http://localhost:9000";
-const WS_SERVER = "ws://localhost:5001/";
+    ? "http://HVA-BE-LB-73ebf961d59373fc.elb.ap-southeast-1.amazonaws.com/api/admin"
+    : "http://HVAS-LB-6943853ce3637d52.elb.ap-southeast-1.amazonaws.com/api/admin";
+const IMG_URL = "http://hva-bucket.s3.ap-southeast-1.amazonaws.com/";
+const WS_SERVER = "ws://HVA-BE-LB-73ebf961d59373fc.elb.ap-southeast-1.amazonaws.com/";
 let axiosInstance = axios.create({
   baseURL: BASE_URL,
 });
